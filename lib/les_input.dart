@@ -7,7 +7,13 @@ class LesInputs extends StatefulWidget {
 }
 
 class _LesInputs extends State<LesInputs> {
-  double bordure_radius_indice = 18.0;
+  @override
+  void dispose() {
+    // Nettoyez le contrôleur lorsque le widget est supprimé.
+    monControleurUn.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new SizedBox(
@@ -17,6 +23,12 @@ class _LesInputs extends State<LesInputs> {
     );
   }
 
+  // mes variables
+  double bordure_radius_indice = 18.0;
+  var monControleurUn = TextEditingController();
+  var monControleurDeux = TextEditingController();
+
+  // # les fonctions
   Widget borderRadius_container() {
     return Container(
       decoration: BoxDecoration(
@@ -35,22 +47,37 @@ class _LesInputs extends State<LesInputs> {
   Widget le_columnTextinput() {
     return Column(
       children: [
-        Container(height: 30),
+        Container(height: 40),
         marge_input('username', 1),
         marge_input('mot de passe', 2),
+        Container(height: 20),
+        leBoutonDe_recup()
       ],
     );
   }
 
   Widget text_input(String labeltext, int indice) {
-    return TextField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black, width: 8.0),
+    if (indice == 1) {
+      return TextField(
+        controller: monControleurUn,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 8.0),
+          ),
+          hintText: labeltext,
         ),
-        hintText: labeltext,
-      ),
-    );
+      );
+    } else {
+      return TextField(
+        controller: monControleurDeux,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 8.0),
+          ),
+          hintText: labeltext,
+        ),
+      );
+    }
   }
 
   Widget marge_input(String labeltext, int indice) {
@@ -58,6 +85,17 @@ class _LesInputs extends State<LesInputs> {
       margin: EdgeInsets.all(10.0),
       width: MediaQuery.of(context).size.width / 1.3,
       child: text_input(labeltext, indice),
+    );
+  }
+
+  Widget leBoutonDe_recup() {
+    return ElevatedButton(
+      onPressed: () {
+        print('| ---------------- |');
+        print(monControleurUn.text);
+        print(monControleurDeux.text);
+      },
+      child: Text("Recuperer"),
     );
   }
 }
